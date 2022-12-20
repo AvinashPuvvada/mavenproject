@@ -1,0 +1,23 @@
+pipeline{
+    agent any
+    tools{
+        maven ('maven 3.0.5')
+    }
+    stages{
+        stage('getting git code'){
+            steps{
+              git 'https://github.com/AvinashPuvvada/mavenproject.git'  
+            }
+        }
+        stage('building with maven'){
+            steps{
+                sh 'mvn clean install'
+            }
+        }
+        stage('deploy'){
+            steps{
+                sh 'sudo su - test -c "ansible-playbook copyvar.yml"'
+            }
+        }
+    }
+}
